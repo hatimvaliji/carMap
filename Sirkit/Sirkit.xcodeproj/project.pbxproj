@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		740C160520F2333900F3826E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740C160420F2333900F3826E /* TableViewController.swift */; };
+		740C160720F24C3F00F3826E /* safety-camera-data.txt in Resources */ = {isa = PBXBuildFile; fileRef = 740C160620F24C3E00F3826E /* safety-camera-data.txt */; };
 		74CF85D920F113D400D318D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CF85D820F113D400D318D4 /* AppDelegate.swift */; };
 		74CF85DB20F113D400D318D4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CF85DA20F113D400D318D4 /* ViewController.swift */; };
 		74CF85DE20F113D400D318D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74CF85DC20F113D400D318D4 /* Main.storyboard */; };
@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		740C160420F2333900F3826E /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		740C160620F24C3E00F3826E /* safety-camera-data.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "safety-camera-data.txt"; path = "../../../../Downloads/safety-camera-data.txt"; sourceTree = "<group>"; };
 		74CF85D520F113D400D318D4 /* Sirkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sirkit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74CF85D820F113D400D318D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74CF85DA20F113D400D318D4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,10 +58,10 @@
 		74CF85D720F113D400D318D4 /* Sirkit */ = {
 			isa = PBXGroup;
 			children = (
+				740C160620F24C3E00F3826E /* safety-camera-data.txt */,
 				74CF85D820F113D400D318D4 /* AppDelegate.swift */,
 				74CF85DA20F113D400D318D4 /* ViewController.swift */,
 				74CF85DC20F113D400D318D4 /* Main.storyboard */,
-				740C160420F2333900F3826E /* TableViewController.swift */,
 				74CF85E220F113EF00D318D4 /* Assets.xcassets */,
 				74CF85E420F113EF00D318D4 /* LaunchScreen.storyboard */,
 				74CF85E720F113EF00D318D4 /* Info.plist */,
@@ -129,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74CF85E620F113EF00D318D4 /* LaunchScreen.storyboard in Resources */,
+				740C160720F24C3F00F3826E /* safety-camera-data.txt in Resources */,
 				74CF85E320F113EF00D318D4 /* Assets.xcassets in Resources */,
 				74CF85DE20F113D400D318D4 /* Main.storyboard in Resources */,
 			);
@@ -144,7 +145,6 @@
 				74CF85DB20F113D400D318D4 /* ViewController.swift in Sources */,
 				74CF85E120F113D400D318D4 /* Sirkit.xcdatamodeld in Sources */,
 				74CF85D920F113D400D318D4 /* AppDelegate.swift in Sources */,
-				740C160520F2333900F3826E /* TableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
