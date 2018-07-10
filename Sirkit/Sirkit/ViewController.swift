@@ -13,9 +13,8 @@ import CoreLocation
 
 
 class ViewController: UIViewController, MKMapViewDelegate{
-    
-    
-    
+
+
     class customPin: NSObject, MKAnnotation{
         var coordinate: CLLocationCoordinate2D
         var title: String?
@@ -39,6 +38,59 @@ class ViewController: UIViewController, MKMapViewDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        var array : [String]?
+        var holder : [Any] = []
+        var elements : [Any] = []
+        var lat : [Any] = []
+        var long : [Any] = []
+        var speed : [Any] = []
+        var type : [Any] = []
+        
+        do {
+            // This solution assumes  you've got the file in your bundle
+            if let path = Bundle.main.path(forResource: "cameraData1", ofType: "txt"){
+                let data = try String(contentsOfFile:path, encoding: String.Encoding.macOSRoman)
+                array = data.components(separatedBy: "\n")
+                for line in array!{
+                    let baseData = line.components(separatedBy: "\t")
+                    for line in baseData{
+                        let latExtract = line.components(separatedBy: "\r" )
+                        for line in latExtract{
+                            _ = holder.append(line.components(separatedBy: ","))
+                            
+                        }
+                        
+                        }
+                    }
+                }
+                
+            //print(holder)
+            //print(holder.count)
+        } catch let err as NSError {
+            // do something with Error
+            print(err)
+        }//parsed data into holder
+    
+        for i in 0..<holder.count {
+            if i % 4 == 0 {
+                lat.append(holder[i])
+            }
+            if ((i+1) % 4) == 0 {
+                type.append(holder[i])
+            }
+            if (i % 4) == 1 {
+                long.append(holder[i])
+            }
+            if (i % 4) == 2 {
+                speed.append(holder[i])
+            }
+        }
+            
+        print(lat)
+        print(long)
+        print(speed)
+        print(type)
         
         let sourceLocation = CLLocationCoordinate2D(latitude: 51.507351 , longitude: -0.127758 )
         let destinationLocation = CLLocationCoordinate2D(latitude: 52.486243, longitude: -1.890401 )

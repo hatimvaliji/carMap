@@ -7,17 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		740C160520F2333900F3826E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740C160420F2333900F3826E /* TableViewController.swift */; };
 		74CF85D920F113D400D318D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CF85D820F113D400D318D4 /* AppDelegate.swift */; };
 		74CF85DB20F113D400D318D4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CF85DA20F113D400D318D4 /* ViewController.swift */; };
 		74CF85DE20F113D400D318D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74CF85DC20F113D400D318D4 /* Main.storyboard */; };
 		74CF85E120F113D400D318D4 /* Sirkit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74CF85DF20F113D400D318D4 /* Sirkit.xcdatamodeld */; };
 		74CF85E320F113EF00D318D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74CF85E220F113EF00D318D4 /* Assets.xcassets */; };
 		74CF85E620F113EF00D318D4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74CF85E420F113EF00D318D4 /* LaunchScreen.storyboard */; };
+		C37C5FEB20F379D6003C857F /* cameraData1.txt in Resources */ = {isa = PBXBuildFile; fileRef = C37C5FEA20F379D6003C857F /* cameraData1.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		740C160420F2333900F3826E /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		74CF85D520F113D400D318D4 /* Sirkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sirkit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74CF85D820F113D400D318D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74CF85DA20F113D400D318D4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -26,6 +25,7 @@
 		74CF85E220F113EF00D318D4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74CF85E520F113EF00D318D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		74CF85E720F113EF00D318D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C37C5FEA20F379D6003C857F /* cameraData1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cameraData1.txt; path = ../../../../../../cameraData1.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,10 +58,10 @@
 		74CF85D720F113D400D318D4 /* Sirkit */ = {
 			isa = PBXGroup;
 			children = (
+				C37C5FEA20F379D6003C857F /* cameraData1.txt */,
 				74CF85D820F113D400D318D4 /* AppDelegate.swift */,
 				74CF85DA20F113D400D318D4 /* ViewController.swift */,
 				74CF85DC20F113D400D318D4 /* Main.storyboard */,
-				740C160420F2333900F3826E /* TableViewController.swift */,
 				74CF85E220F113EF00D318D4 /* Assets.xcassets */,
 				74CF85E420F113EF00D318D4 /* LaunchScreen.storyboard */,
 				74CF85E720F113EF00D318D4 /* Info.plist */,
@@ -129,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74CF85E620F113EF00D318D4 /* LaunchScreen.storyboard in Resources */,
+				C37C5FEB20F379D6003C857F /* cameraData1.txt in Resources */,
 				74CF85E320F113EF00D318D4 /* Assets.xcassets in Resources */,
 				74CF85DE20F113D400D318D4 /* Main.storyboard in Resources */,
 			);
@@ -144,7 +145,6 @@
 				74CF85DB20F113D400D318D4 /* ViewController.swift in Sources */,
 				74CF85E120F113D400D318D4 /* Sirkit.xcdatamodeld in Sources */,
 				74CF85D920F113D400D318D4 /* AppDelegate.swift in Sources */,
-				740C160520F2333900F3826E /* TableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
