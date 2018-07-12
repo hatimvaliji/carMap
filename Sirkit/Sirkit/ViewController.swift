@@ -41,11 +41,13 @@ class ViewController: UIViewController, MKMapViewDelegate{
         
         var array : [String]?
         var holder : [Any] = []
-        var elements : [Any] = []
-        var lat : [Any] = []
-        var long : [Any] = []
-        var speed : [Any] = []
-        var type : [Any] = []
+        var lat = [] as [[String]]
+        var long = [] as [[String]]
+        var speed = [] as [[String]]
+        var type = [] as [[String]]
+
+        var pins : [AnyObject] = []
+        
         
         do {
             // This solution assumes  you've got the file in your bundle
@@ -71,26 +73,41 @@ class ViewController: UIViewController, MKMapViewDelegate{
             // do something with Error
             print(err)
         }//parsed data into holder
-    
+        
+      
+        
         for i in 0..<holder.count {
             if i % 4 == 0 {
-                lat.append(holder[i])
+                lat.append(holder[i] as! [String])
             }
             if ((i+1) % 4) == 0 {
-                type.append(holder[i])
+                type.append(holder[i] as! [String])
             }
             if (i % 4) == 1 {
-                long.append(holder[i])
+                long.append(holder[i] as! [String])
             }
             if (i % 4) == 2 {
-                speed.append(holder[i])
+                speed.append(holder[i] as! [String])
             }
         }
-            
-        print(lat)
-        print(long)
-        print(speed)
-        print(type)
+        
+        
+        let reducedLat = lat.joined().compactMap(Float.init) // changing array of arrays of strings into array of doubles
+        let reducedLong = long.joined().compactMap(Float.init)
+        let reducedType = type.flatMap{$0}
+        let reducedSpeed = speed.flatMap{$0}
+        //print(reducedLat)
+        //print(reducedLong)
+        //print(reducedType)
+        //print(reducedSpeed)
+     
+        for i in 0..<lat.count {
+            let locations = customPin(pinTitle: reducedType[i]+reducedSpeed[i], pinSubTitle: "", location: CLLocationCoordinate2DMake(CLLocationDegrees(reducedLat[i]), CLLocationDegrees(reducedLong[i])))
+            self.mapView.addAnnotation(locations)
+        }
+       
+        
+       
         
         let sourceLocation = CLLocationCoordinate2D(latitude: 51.507351 , longitude: -0.127758 )
         let destinationLocation = CLLocationCoordinate2D(latitude: 52.486243, longitude: -1.890401 )
@@ -98,9 +115,16 @@ class ViewController: UIViewController, MKMapViewDelegate{
         
         let sourcePin = customPin(pinTitle: "London", pinSubTitle: "", location: sourceLocation)
         let destinationPin = customPin(pinTitle: "Birmingham", pinSubTitle: "", location: destinationLocation)
+    
+        
+        
+        
+        
+        
         
         self.mapView.addAnnotation(sourcePin)
         self.mapView.addAnnotation(destinationPin)
+        //self.mapView.addAnnotations(pins)
         
         let sourcePlaceMark = MKPlacemark(coordinate: sourceLocation)
         let destinationPlaceMark = MKPlacemark(coordinate: destinationLocation)
