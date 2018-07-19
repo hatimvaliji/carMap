@@ -12,9 +12,25 @@ import CoreLocation
 
 
 
-class ViewController: UIViewController, MKMapViewDelegate{
+class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate{
 
+    
+var locationManager = CLLocationManager()
+var currentLocation: CLLocation?
+let userDefaults = UserDefaults.standard
 
+    var array : [String]?
+    var holder : [Any] = []
+    var lat = [] as [[String]]
+    var long = [] as [[String]]
+    var speed = [] as [[String]]
+    var type = [] as [[String]]
+
+    var reducedLat : [Double] = []
+    var reducedLong : [Double] = []
+    var reducedType : [Any] = []
+    var reducedSpeed : [Any] = []
+    
     class customPin: NSObject, MKAnnotation{
         var coordinate: CLLocationCoordinate2D
         var title: String?
@@ -38,18 +54,33 @@ class ViewController: UIViewController, MKMapViewDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        var array : [String]?
-        var holder : [Any] = []
-        var lat = [] as [[String]]
-        var long = [] as [[String]]
-        var speed = [] as [[String]]
-        var type = [] as [[String]]
-
-        var pins : [AnyObject] = []
+        //ready to parse
         
         
-        do {
+        
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+        
+        
+        
+        mapView.showsUserLocation = true
+        if CLLocationManager.locationServicesEnabled() == true {
+            if CLLocationManager.authorizationStatus() == .restricted || CLLocationManager.authorizationStatus() == .denied || CLLocationManager.authorizationStatus() == .notDetermined {
+                locationManager.requestWhenInUseAuthorization()
+            }
+            locationManager.desiredAccuracy = 1.0
+            locationManager.delegate = self
+            locationManager.startUpdatingLocation()
+        }else {
+            print("Please turn on location services.")
+        }
+       
+        
+        
+        do {//parsing
             // This solution assumes  you've got the file in your bundle
             if let path = Bundle.main.path(forResource: "cameraData1", ofType: "txt"){
                 let data = try String(contentsOfFile:path, encoding: String.Encoding.macOSRoman)
@@ -75,7 +106,7 @@ class ViewController: UIViewController, MKMapViewDelegate{
         }//parsed data into holder
         
       
-        
+        //further parsing
         for i in 0..<holder.count {
             if i % 4 == 0 {
                 lat.append(holder[i] as! [String])
@@ -93,95 +124,144 @@ class ViewController: UIViewController, MKMapViewDelegate{
         
         
         let reducedLat = lat.joined().compactMap(Float.init) // changing array of arrays of strings into array of doubles
-        let reducedLong = long.joined().compactMap(Float.init)
-        let reducedType = type.flatMap{$0}
-        let reducedSpeed = speed.flatMap{$0}
+        let reducedLong = long.joined().compactMap(Float.init) //^^
+        let reducedType = type.flatMap{$0} // ^
+        let reducedSpeed = speed.flatMap{$0} // ^
         //print(reducedLat)
         //print(reducedLong)
         //print(reducedType)
         //print(reducedSpeed)
      
-        for i in 0..<lat.count {
-            let locations = customPin(pinTitle: reducedType[i]+reducedSpeed[i], pinSubTitle: "", location: CLLocationCoordinate2DMake(CLLocationDegrees(reducedLat[i]), CLLocationDegrees(reducedLong[i])))
-            self.mapView.addAnnotation(locations)
-        }
-       
-        
-       
-        
-        let sourceLocation = CLLocationCoordinate2D(latitude: 51.507351 , longitude: -0.127758 )
-        let destinationLocation = CLLocationCoordinate2D(latitude: 52.486243, longitude: -1.890401 )
-        let thirdLocation = CLLocationCoordinate2D(latitude: 53.480759 , longitude: -2.242631)
-        
-        let sourcePin = customPin(pinTitle: "London", pinSubTitle: "", location: sourceLocation)
-        let destinationPin = customPin(pinTitle: "Birmingham", pinSubTitle: "", location: destinationLocation)
     
         
         
+ //       while locationManager.location?.coordinate != nil {
+   //         for i in 0..<reducedLat.count{
+     //           while locationManager.location?.coordinate.latitude != (Double(reducedLat[i])) || locationManager.location?.coordinate.longitude != (Double(reducedLong[i])){
+       //             while locationManager.location?.coordinate != nil {
+         //           }
+           //     }
+//            }
+  //      }
+            
+        
+       
+            
+            
+            // droppin pins
+        
+        //attempt at making radius around all pins and user locatio
+//
+        
+
+       // let location = CLLocation(latitude: (locationManager.location?.coordinate.latitude)!, longitude: (locationManager.location?.coordinate.longitude)!)
+        //let circleCenter  = CLLocation(latitude: CLLocationDegrees(reducedLat[0]), longitude: CLLocationDegrees(reducedLong[0]))
+      
+        
+        for i in 0..<lat.count {
+            let locations1 = customPin(pinTitle: reducedType[i]+" "+reducedSpeed[i], pinSubTitle: "", location: CLLocationCoordinate2DMake(CLLocationDegrees(reducedLat[i]), CLLocationDegrees(reducedLong[i])))
+            self.mapView.addAnnotation(locations1)
+            let rad = CLLocationDistance(10)
+            let circles = [MKCircle(center: (CLLocationCoordinate2DMake(CLLocationDegrees(reducedLat[i]), CLLocationDegrees(reducedLong[i]))), radius: rad)]
+            self.mapView.addOverlays(circles)
+        }
+        mapView.delegate = self//absolutely necessry!
+    
+       
+
         
         
         
         
-        self.mapView.addAnnotation(sourcePin)
-        self.mapView.addAnnotation(destinationPin)
-        //self.mapView.addAnnotations(pins)
+  
         
-        let sourcePlaceMark = MKPlacemark(coordinate: sourceLocation)
-        let destinationPlaceMark = MKPlacemark(coordinate: destinationLocation)
+               
         
+    }//end of viewDidLoad
+        
+    
+ 
+    
+    
+    
+    //var currentUserLocation =
+    
+    //MARK:- MapKitdlegate
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+        
+        guard let locations = locationManager.location?.coordinate else{
+            return
+        }
+        print("locations = \(locations.latitude) \(locations.longitude)")
+        
+        
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let region = MKCoordinateRegion(center: CLLocationCoordinate2DMake((locationManager.location?.coordinate.latitude)!, (locationManager.location?.coordinate.longitude)!), span: span)
+        self.mapView.setRegion(region, animated: true)
+        
+        //attempt at routing by avoiding pin coords
+        let sourceLoc = (locationManager.location?.coordinate)!
+        let destLoc = CLLocationCoordinate2DMake(51.5033640, -0.1276250)
+        
+        let sourcePlacemark = MKPlacemark(coordinate: sourceLoc)
+        let destPlacemark = MKPlacemark(coordinate: destLoc)
+        
+        let sourceItem = MKMapItem(placemark: sourcePlacemark)
+        let destItem = MKMapItem(placemark: destPlacemark)
         
         let directionRequest = MKDirectionsRequest()
-        directionRequest.source = MKMapItem(placemark: sourcePlaceMark)
-        directionRequest.destination = MKMapItem(placemark: destinationPlaceMark)
+        directionRequest.source = sourceItem
+        directionRequest.destination = destItem
         directionRequest.transportType = .automobile
         
         let directions = MKDirections(request: directionRequest)
-        directions.calculate { (response, error) in
-            guard let directionResponse = response else {
+        directions.calculate(completionHandler: {
+            response, error in
+            
+            guard let response = response else {
                 if let error = error {
-                    print("We have an error getting directions==\(error.localizedDescription)")
+                    print("Something went wrong.")
                 }
                 return
             }
-            let route = directionResponse.routes[0]
+            let route  = response.routes[0]
             self.mapView.add(route.polyline, level: .aboveRoads)
             
-            let rect = route.polyline.boundingMapRect
-            self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
-        }
-        self.mapView.delegate = self
+            let rekt = route.polyline.boundingMapRect
+            self.mapView.setRegion(MKCoordinateRegionForMapRect(rekt), animated: true)
+        })
+        
+        
+    }
+    
+    func locationManagerError(_manager: CLLocationManager, didFailWithError error: Error) {
+        print("Unable to access your current location")
     }
     
     
-    
-    
-    
-    //MARK:- MapKitdlegates
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let renderer = MKPolylineRenderer(overlay: overlay)
-        renderer.strokeColor=UIColor.blue
-        renderer.lineWidth = 2.0
-        return renderer
+        if overlay is MKPolyline {
+            let renderer1 = MKPolylineRenderer(overlay: overlay)
+            renderer1.strokeColor = UIColor.blue
+            renderer1.lineWidth = 0.5
+            return renderer1
+        }
+        
+        if overlay is MKCircle {
+            let renderer = MKCircleRenderer(overlay: overlay)
+            renderer.fillColor = UIColor.red.withAlphaComponent(0.2)
+            renderer.strokeColor = UIColor.red
+            renderer.lineWidth = 0.5
+            return renderer
+}
+        
+        return MKOverlayRenderer()
+        
     }
     
-    
-    
-    //mapView.delegate = self
-    
-    //let coordinate = CLLocationCoordinate2D(latitude: 51.559106, longitude: 0.13001277)
-    //let region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
-    //mapView.setRegion(region, animated: true)
-    
-    //pin = AnnotationPin(title: "Red Light", subtitle:"Test" , coordinate: coordinate)
-    //mapView.addAnnotation(pin)
 }
 
-//func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//  let annotationView = MKAnnotationView(annotation: pin, reuseIdentifier: "redlight")
-//annotationView.image = UIImage(named: "cctv.png")
-//let transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-//annotationView.transform = transform
-//return annotationView
 
 
 //func didReceiveMemoryWarning() {
